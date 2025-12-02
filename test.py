@@ -37,7 +37,7 @@ num_classes = int(test_dataset.labels.max() + 1)
 # --------------------------
 # Load Model
 # --------------------------
-model = CNN_Transformer(num_classes=5).to(device)
+model = SimpleRetinaCNN(num_classes=5).to(device)
 model.load_state_dict(torch.load("model.pth", map_location=device))
 model.eval()
 
