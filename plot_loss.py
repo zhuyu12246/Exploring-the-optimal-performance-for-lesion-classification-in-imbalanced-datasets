@@ -1,6 +1,6 @@
 import torch
 import matplotlib.pyplot as plt
-# 画 loss 曲线
+# 绘制 loss 曲线
 train_loss = torch.load("train_loss.pt")
 val_loss = torch.load("val_loss.pt")
 
