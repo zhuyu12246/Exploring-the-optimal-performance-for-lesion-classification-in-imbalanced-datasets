@@ -1,0 +1,6 @@
+*.idea
+*.DS_Store
+
+model.pth
+train_loss.pt
+val_loss.pt
