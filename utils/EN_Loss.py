@@ -1,7 +1,7 @@
 import torch
 import numpy as np
-
-def get_en_weights(num_samples, beta=0.999, device='cpu'):
+# Effective Number of Samples
+def get_en_weights(num_samples, beta=0.99, device='cpu'):
     """
     根据 Effective Number of Samples 计算类别权重
 

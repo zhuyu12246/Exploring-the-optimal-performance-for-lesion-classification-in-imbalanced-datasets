@@ -43,19 +43,20 @@ val_dataset   = RetinaMNIST(split="val",   transform=transform_val, download=Tru
 train_loader = DataLoader(train_dataset, batch_size=BATCH, shuffle=True)
 val_loader   = DataLoader(val_dataset,   batch_size=BATCH, shuffle=False)
 
-# 获取类别样本数量
-targets = np.array([y for _, y in train_dataset])
-num_classes = len(np.unique(targets))
-num_samples = [np.sum(targets==i) for i in range(num_classes)]
-
-weights = get_en_weights(num_samples)
+# 获取类别样本数量 使用EN_loss
+# targets = np.array([y for _, y in train_dataset])
+# num_classes = len(np.unique(targets))
+# num_samples = [np.sum(targets==i) for i in range(num_classes)]
+#
+# weights = get_en_weights(num_samples)
 
 
 # model
-model = SimpleRetinaCNN(num_classes=5).to(device)
+model = CNN_Transformer(num_classes=5).to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=1e-4)
-criterion_train = nn.CrossEntropyLoss(weight=weights)
-criterion_val = nn.CrossEntropyLoss()
+criterion = nn.CrossEntropyLoss()
+# criterion_train = nn.CrossEntropyLoss(weight=weights)
+# criterion_val = nn.CrossEntropyLoss()
 train_losses = []
 val_losses = []
 
@@ -68,7 +69,8 @@ for epoch in range(EPOCHS):
         y = y.squeeze().long().to(device)   # ★ 必须加 squeeze()
 
         logits = model(x)
-        loss = criterion_train(logits, y)
+        # loss = criterion_train(logits, y)
+        loss = criterion(logits, y)
 
         optimizer.zero_grad()
         loss.backward()
@@ -89,7 +91,8 @@ for epoch in range(EPOCHS):
             y = y.squeeze().long().to(device)   # ★ 验证集也必须 squeeze()
 
             logits = model(x)
-            val_total += criterion_val(logits, y).item()
+            # val_total += criterion_val(logits, y).item()
+            val_total += criterion(logits, y).item()
 
     avg_val = val_total / len(val_loader)
     val_losses.append(avg_val)

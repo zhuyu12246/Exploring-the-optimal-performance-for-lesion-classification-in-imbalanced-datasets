@@ -7,6 +7,8 @@ import torchvision.models as models
 # Patch Embedding + Transformer Encoder：把 CNN 输出分块 token，捕捉全局依赖
 #
 # 分类头 (FC)：把 Transformer 输出映射到类别预测
+
+# Transformer 对小数据集非常容易过拟合，因为自注意力机制参数多 ***
 class CNN_Transformer(nn.Module):
     def __init__(self, num_classes=5, img_size=28, patch_size=2, embed_dim=128, num_heads=4, num_layers=2):
         super().__init__()
